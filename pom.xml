@@ -10,8 +10,8 @@
   <artifactId>doosutils-util</artifactId>
   <packaging>jar</packaging>
   <version>2.1.1-SNAPSHOT</version>
-  <name>Utility classes voor DOOS Applicaties (util)</name>
-  <description>Utility classes voor DOOS Applicaties.</description>
+  <name>Utility classes voor dOOS Applicaties (util)</name>
+  <description>Utility classes voor dOOS Applicaties.</description>
   <inceptionYear>2009</inceptionYear>
   <scm>
     <developerConnection>scm:git:ssh://ptah.debooy.eu/srv/git/debooy/DoosUtilsUtil.git</developerConnection>
@@ -24,7 +24,7 @@
       <name>Marco de Booij</name>
       <id>booymar</id>
       <email>marco.developer@debooy.eu</email>
-      <organization>DOOS</organization>
+      <organization>dOOS</organization>
       <roles>
         <role>Project Manager</role>
         <role>Java Developer</role>
