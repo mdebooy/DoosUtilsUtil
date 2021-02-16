@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Marco de Booij
+ * Copyright (c) 2011 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -27,13 +27,12 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.doosutils.errorhandling.handler.base.ExceptionHandlerBase;
-
 import java.sql.SQLException;
-
 import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
+import org.apache.openjpa.lib.jdbc.ReportingSQLException;
 
 
 /**
@@ -53,6 +52,7 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
     }
   }
 
+  @Override
   public void handle(Throwable t) {
     try {
       throw t;
@@ -84,10 +84,28 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
                                        eee.getMessage(), eee);
       log(de);
       throw de;
+    } catch (ReportingSQLException rse) {
+      log(new TechnicalException(DoosError.RUNTIME_EXCEPTION,
+                                       DoosLayer.PERSISTENCE,
+                                       rse.getMessage(), rse));
+      DoosRuntimeException  de;
+      switch (rse.getSQLState()) {
+        case "23505":
+          de  =
+              new DuplicateObjectException(DoosLayer.PERSISTENCE,
+                                           rse.getMessage(), rse);
+          break;
+        default:
+          de  = new TechnicalException(DoosError.RUNTIME_EXCEPTION,
+                                       DoosLayer.PERSISTENCE,
+                                       rse.getMessage(), rse);
+      }
+      log(de);
+      throw de;
     } catch (PersistenceException pe) {
       Throwable thr = findRootCause(pe, 5);
 
-      DoosRuntimeException ir = null;
+      DoosRuntimeException ir;
 
       ir = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
           thr.getMessage(), thr);
@@ -139,26 +157,6 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
   public static Throwable findRootCause(Throwable t, int nbTimes) {
     Throwable targetException = t;
     if (null != targetException) {
-//      try {
-        // TODO Vind de PropertyUtils
-//        String exceptionProperty = "targetException";
-//        if (PropertyUtils.isReadable(t, exceptionProperty)) {
-//          targetException = (Throwable) PropertyUtils.getProperty(t,
-//              exceptionProperty);
-//        } else {
-//          exceptionProperty = "causedByException";
-//          if (PropertyUtils.isReadable(th, exceptionProperty)) {
-//            targetException = (Throwable) PropertyUtils.getProperty(t,
-//                exceptionProperty);
-//          }
-//        }
-//        if (null != targetException) {
-//          t = targetException;
-//        }
-//      } catch (Exception ex) {
-//        ex.printStackTrace();
-//      }
-
       if ((null != targetException.getCause()) && (nbTimes != 0)) {
         targetException = t.getCause();
         if ((targetException instanceof SQLException)) {

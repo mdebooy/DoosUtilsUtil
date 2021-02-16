@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Marco de Booij
+ * Copyright (c) 2011 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -20,10 +20,8 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosExceptionHelper;
 import eu.debooy.doosutils.errorhandling.handler.base.ExceptionHandlerFactory;
 import eu.debooy.doosutils.errorhandling.handler.base.IExceptionHandler;
-
 import java.io.Serializable;
 import java.util.Collection;
-
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 
@@ -47,6 +45,10 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
   /**
    * Verwijder de throws Exception niet omdat anders de applicatie niet
    * ge-deployed kan worden.
+   *
+   * @param invocation De InvocationContext
+   * @return object
+   * @throws java.lang.Exception
    */
   @AroundInvoke
   public Object handleException(InvocationContext invocation)
@@ -69,7 +71,7 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
   /**
    * Behandel het object not found pattern.
    * Genereer een ObjectNotFoundException als er geen DAO gevonden is.
-   * 
+   *
    * @param invocation De InvocationContext
    * @param object Het object dat niet gevonden werd.
    */
@@ -81,7 +83,7 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
       if (null == object) {
         e = buildObjectNotFoundException(invocation);
       } else if (((object instanceof Collection))
-          && (((Collection<?>) object).size() == 0)) {
+          && (((Collection<?>) object).isEmpty())) {
         e = buildObjectNotFoundException(invocation);
       }
     }
@@ -94,7 +96,7 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
 
   /**
    * Maak de ObjectNotFoundException exception.
-   * 
+   *
    * @param invocation De InvocationContext
    * @return ObjectNotFoundException
    */

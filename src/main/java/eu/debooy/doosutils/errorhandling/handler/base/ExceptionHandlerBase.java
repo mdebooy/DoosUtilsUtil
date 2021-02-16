@@ -18,7 +18,6 @@ package eu.debooy.doosutils.errorhandling.handler.base;
 
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.IDoosException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,9 +41,10 @@ public abstract class ExceptionHandlerBase implements IExceptionHandler {
     this.objectNotFoundPattern  = objectNotFoundPattern;
   }
 
+  @Override
   public void log(IDoosException e) {
-    if ((Boolean.TRUE.booleanValue() != e.isLoggable())
-        && (Boolean.TRUE.booleanValue() != e.isLogged())) {
+    if (e.isLoggable()
+        && (!e.isLogged())) {
       LOGGER.error("IDoosException logged by " + getName() + " handler",
                    (Throwable) e);
 
@@ -52,14 +52,17 @@ public abstract class ExceptionHandlerBase implements IExceptionHandler {
     }
   }
 
+  @Override
   public String getName() {
     return name;
   }
 
+  @Override
   public DoosLayer getLayer() {
     return layer;
   }
 
+  @Override
   public boolean isObjectNotFoundPattern() {
     return objectNotFoundPattern;
   }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Marco de Booy
+ * Copyright (c) 2009 Marco de Booy
  *
  * Licensed under the EUPL, Version 1.0 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -34,8 +34,8 @@ public abstract class DoosRuntimeException extends RuntimeException
   }
 
   /**
-   * @param doosError Type of error
-   * @param doosLayer Layer where the error was thrown
+   * @param error     Type of error
+   * @param layer     Layer where the error was thrown
    * @param loggable  Exption loggable or not?
    * @param message   Explanation of the runtimeException
    * @param cause     Cause of the runtimeException
@@ -51,11 +51,10 @@ public abstract class DoosRuntimeException extends RuntimeException
   }
 
   /**
-   * @param doosError Type of error
-   * @param doosLayer Layer where the error was thrown
-   * @param loggable  Exption loggable or not?
-   * @param message   Explanation of the runtimeException
-   * @param cause     Cause of the runtimeException
+   * @param error   Type of error
+   * @param layer   Layer where the error was thrown
+   * @param message Explanation of the runtimeException
+   * @param cause   Cause of the runtimeException
    */
   public DoosRuntimeException(DoosError error, DoosLayer layer, String message,
                               Throwable cause) {
@@ -63,8 +62,8 @@ public abstract class DoosRuntimeException extends RuntimeException
   }
 
   /**
-   * @param doosError Type of error
-   * @param doosLayer Layer where the error was thrown
+   * @param error     Type of error
+   * @param layer     Layer where the error was thrown
    * @param loggable  Exption loggable or not?
    * @param message   Explanation of the runtimeException
    */
@@ -74,43 +73,51 @@ public abstract class DoosRuntimeException extends RuntimeException
   }
 
   /**
-   * @param doosError Type of error
-   * @param doosLayer Layer where the error was thrown
-   * @param message   Explanation of the runtimeException
+   * @param error   Type of error
+   * @param layer   Layer where the error was thrown
+   * @param message Explanation of the runtimeException
    */
   public DoosRuntimeException(DoosError error, DoosLayer layer,
                               String message) {
     this(error, layer, true, message, null);
   }
 
+  @Override
   public DoosError getDoosError() {
     return this.error;
   }
 
+  @Override
   public DoosLayer getDoosLayer() {
     return this.layer;
   }
 
+  @Override
   public boolean isLogged() {
     return this.logged;
   }
 
+  @Override
   public void setLoggedTrue() {
     this.logged = true;
   }
 
+  @Override
   public boolean isLoggable() {
     return this.loggable;
   }
 
+  @Override
   public void setLoggable(boolean loggable) {
     this.loggable = loggable;
   }
 
+  @Override
   public String getStackTraceAsString() {
     return DoosExceptionHelper.getStackTrace(this);
   }
 
+  @Override
   public String toString() {
     return "DoosRuntimeException ( " + super.toString() + "    "  + "layer = "
            + this.layer + "    " + "error = " + this.error + " )";
