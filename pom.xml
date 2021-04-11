@@ -14,8 +14,8 @@
   <description>Utility classes voor dOOS Applicaties.</description>
   <inceptionYear>2009</inceptionYear>
   <scm>
-    <developerConnection>scm:git:ssh://ptah.debooy.eu/srv/git/debooy/DoosUtilsUtil.git</developerConnection>
-    <connection>scm:git:ssh://ptah.debooy.eu/srv/git/debooy/DoosUtilsUtil.git</connection>
+    <developerConnection>scm:git:ssh://ptah.debooy.eu/srv/local/devops/git/debooy/DoosUtilsUtil.git</developerConnection>
+    <connection>scm:git:ssh://ptah.debooy.eu/srv/local/devops/git/debooy/DoosUtilsUtil.git</connection>
     <tag>HEAD</tag>
   </scm>
 
