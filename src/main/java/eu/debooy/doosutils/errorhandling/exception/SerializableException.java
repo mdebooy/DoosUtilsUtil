@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Marco de Booij
+ * Copyright (c) 2011 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -20,7 +20,6 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.doosutils.errorhandling.exception.base.IDoosException;
-
 import javax.ejb.ApplicationException;
 
 
@@ -50,6 +49,7 @@ public class SerializableException extends DoosRuntimeException {
     setStackTrace(source.getStackTrace());
   }
 
+  @Override
   public String toString() {
     return string;
   }

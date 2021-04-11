@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Marco de Booij
+ * Copyright (c) 2009 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -33,13 +33,6 @@ public class DoosException extends Exception
     super();
   }
 
-  /**
-   * @param doosError Type of error
-   * @param doosLayer Layer where the error was thrown
-   * @param loggable  Exption loggable or not?
-   * @param message   Explanation of the runtimeException
-   * @param cause     Cause of the runtimeException
-   */
   public DoosException(DoosError error, DoosLayer layer, boolean loggable,
                        String message, Throwable cause) {
     super(message, cause);
@@ -49,66 +42,56 @@ public class DoosException extends Exception
     this.logged   = false;
   }
 
-  /**
-   * @param doosError Type of error
-   * @param doosLayer Layer where the error was thrown
-   * @param loggable  Exption loggable or not?
-   * @param message   Explanation of the runtimeException
-   * @param cause     Cause of the runtimeException
-   */
   public DoosException(DoosError error, DoosLayer layer, String message,
                        Throwable cause) {
     this(error, layer, true, message, cause);
   }
 
-  /**
-   * @param doosError Type of error
-   * @param doosLayer Layer where the error was thrown
-   * @param loggable  Exption loggable or not?
-   * @param message   Explanation of the runtimeException
-   */
   public DoosException(DoosError error, DoosLayer layer, boolean loggable,
                        String message) {
     this(error, layer, loggable, message, null);
   }
 
-  /**
-   * @param doosError Type of error
-   * @param doosLayer Layer where the error was thrown
-   * @param message   Explanation of the runtimeException
-   */
   public DoosException(DoosError error, DoosLayer layer, String message) {
     this(error, layer, true, message, null);
   }
 
+  @Override
   public DoosError getDoosError() {
     return this.error;
   }
 
+  @Override
   public DoosLayer getDoosLayer() {
     return this.layer;
   }
 
+  @Override
   public boolean isLogged() {
     return this.logged;
   }
 
+  @Override
   public void setLoggedTrue() {
     this.logged = true;
   }
 
+  @Override
   public boolean isLoggable() {
     return this.loggable;
   }
 
+  @Override
   public void setLoggable(boolean loggable) {
     this.loggable = loggable;
   }
 
+  @Override
   public String getStackTraceAsString() {
     return DoosExceptionHelper.getStackTrace(this);
   }
 
+  @Override
   public String toString() {
     return "DoosException ( " + super.toString() + "    " + "    "
            + "layer = " + this.layer + "    " + "error = " + this.error + " )";

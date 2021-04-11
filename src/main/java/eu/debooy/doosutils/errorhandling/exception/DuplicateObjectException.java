@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 Marco de Booij
+ * Copyright (c) 2009 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.0 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -19,13 +19,12 @@ package eu.debooy.doosutils.errorhandling.exception;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
-
 import javax.ejb.ApplicationException;
 
 
 /**
  * @author Marco de Booij
- */ 
+ */
 @ApplicationException
 public class DuplicateObjectException extends DoosRuntimeException {
   private static final long serialVersionUID = 1L;
