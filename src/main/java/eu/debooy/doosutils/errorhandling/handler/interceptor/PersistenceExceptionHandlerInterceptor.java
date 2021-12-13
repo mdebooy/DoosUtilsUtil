@@ -32,7 +32,7 @@ import javax.interceptor.InvocationContext;
 public class PersistenceExceptionHandlerInterceptor implements Serializable {
   private static final  long  serialVersionUID  = 1L;
 
-  private IExceptionHandler handler;
+  private final IExceptionHandler handler;
 
   public PersistenceExceptionHandlerInterceptor() {
     this.handler  = ExceptionHandlerFactory.getPersistenceHandler();

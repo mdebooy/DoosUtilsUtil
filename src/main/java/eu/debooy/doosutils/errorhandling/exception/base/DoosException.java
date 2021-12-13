@@ -24,14 +24,10 @@ public class DoosException extends Exception
     implements IDoosException {
   private static final long serialVersionUID = 1L;
 
-  private DoosError error;
-  private DoosLayer layer;
-  private boolean   loggable;
-  private boolean   logged;
-
-  public DoosException() {
-    super();
-  }
+  private final DoosError error;
+  private final DoosLayer layer;
+  private       boolean   loggable;
+  private       boolean   logged;
 
   public DoosException(DoosError error, DoosLayer layer, boolean loggable,
                        String message, Throwable cause) {
@@ -72,13 +68,13 @@ public class DoosException extends Exception
   }
 
   @Override
-  public void setLoggedTrue() {
-    this.logged = true;
+  public boolean isLoggable() {
+    return this.loggable;
   }
 
   @Override
-  public boolean isLoggable() {
-    return this.loggable;
+  public String getStackTraceAsString() {
+    return DoosExceptionHelper.getStackTrace(this);
   }
 
   @Override
@@ -87,8 +83,8 @@ public class DoosException extends Exception
   }
 
   @Override
-  public String getStackTraceAsString() {
-    return DoosExceptionHelper.getStackTrace(this);
+  public void setLoggedTrue() {
+    logged  = true;
   }
 
   @Override

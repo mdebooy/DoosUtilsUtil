@@ -30,11 +30,11 @@ public abstract class ExceptionHandlerBase implements IExceptionHandler {
 
   private static final Logger LOGGER                =
       LoggerFactory.getLogger(ExceptionHandlerBase.class);
-  private String              name;
-  private DoosLayer           layer;
-  private boolean             objectNotFoundPattern = true;
+  private final String    name;
+  private final DoosLayer layer;
+  private       boolean   objectNotFoundPattern = true;
 
-  public ExceptionHandlerBase(String name, DoosLayer layer,
+  protected ExceptionHandlerBase(String name, DoosLayer layer,
                               boolean objectNotFoundPattern) {
     this.name                   = name;
     this.layer                  = layer;
@@ -47,8 +47,6 @@ public abstract class ExceptionHandlerBase implements IExceptionHandler {
         && (!e.isLogged())) {
       LOGGER.error("IDoosException logged by " + getName() + " handler",
                    (Throwable) e);
-
-      e.setLoggedTrue();
     }
   }
 

@@ -27,8 +27,8 @@ public final class DoosExceptionHelper {
   private DoosExceptionHelper() {}
 
   public static String getStackTrace(Throwable t) {
-    StringWriter  sw  = new StringWriter();
-    PrintWriter   pw  = new PrintWriter(sw);
+    var sw  = new StringWriter();
+    var pw  = new PrintWriter(sw);
     t.printStackTrace(pw);
 
     return sw.toString();
@@ -52,8 +52,8 @@ public final class DoosExceptionHelper {
       return "<NULL>";
     }
 
-    StringBuilder params  = new StringBuilder("");
-    for (Object object : objects) {
+    var params  = new StringBuilder();
+    for (var object : objects) {
       if (params.length() > 0) {
         params.append(", ");
       }

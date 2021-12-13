@@ -69,6 +69,7 @@ public class DoosError implements Serializable {
     return description;
   }
 
+  @Override
   public final String toString() {
     return (new StringBuilder()).append("DoosError ( ")
                                 .append(super.toString())

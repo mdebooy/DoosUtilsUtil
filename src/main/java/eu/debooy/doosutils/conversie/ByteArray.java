@@ -30,9 +30,9 @@ public final class ByteArray {
   private ByteArray() {}
 
   public static Object byteArrayToObject(byte[] byteArray) throws IOException {
-    ByteArrayInputStream  bais    = new ByteArrayInputStream(byteArray);
-    ObjectInputStream     ois     = null;
-    Object                object  = null;
+    var               bais    = new ByteArrayInputStream(byteArray);
+    ObjectInputStream ois;
+    Object            object  = null;
     try {
       ois     = new ObjectInputStream(bais);
       object  = ois.readObject();
@@ -44,15 +44,9 @@ public final class ByteArray {
     return object;
   }
 
-  /**
-   * Zet een object om in een byte array.
-   * 
-   * @param object
-   * @return
-   */
   public static byte[] toByteArray(Object object) throws IOException {
-    ByteArrayOutputStream baos      = new ByteArrayOutputStream();
-    ObjectOutputStream    oos       = new ObjectOutputStream(baos);
+    var baos  = new ByteArrayOutputStream();
+    var oos   = new ObjectOutputStream(baos);
     oos.writeObject(object);
 
     return baos.toByteArray();

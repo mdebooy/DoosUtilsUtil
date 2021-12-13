@@ -37,6 +37,7 @@ public class DefaultEJBExceptionHandler extends ExceptionHandlerBase {
     super(name, layer, objectNotFoundPattern);
   }
 
+  @Override
   public void handle(Throwable t) {
     try {
       throw t;
@@ -51,7 +52,7 @@ public class DefaultEJBExceptionHandler extends ExceptionHandlerBase {
         throw e;
       }
     } catch (RuntimeException e) {
-      DoosRuntimeException  de  = null;
+      DoosRuntimeException  de;
       if (shouldBeSerialized(e)) {
         de  = new SerializableException(e);
       } else {
@@ -70,7 +71,7 @@ public class DefaultEJBExceptionHandler extends ExceptionHandlerBase {
   }
 
   private boolean shouldBeSerialized(Throwable t) {
-    Package pack  = t.getClass().getPackage();
+    var pack  = t.getClass().getPackage();
     if (null == pack) {
       return false;
     }

@@ -113,7 +113,7 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
       log(ir);
       throw ir;
     } catch (RuntimeException rt) {
-      DoosRuntimeException ir = null;
+      DoosRuntimeException ir;
       if (shouldBeSerialized(rt)) {
         ir = new SerializableException(rt);
       } else {

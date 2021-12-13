@@ -24,25 +24,14 @@ public abstract class DoosRuntimeException extends RuntimeException
     implements IDoosException {
   private static final long serialVersionUID = 1L;
 
-  private DoosError error;
-  private DoosLayer layer;
-  private boolean   loggable;
-  private boolean   logged;
+  private final DoosError error;
+  private final DoosLayer layer;
+  private       boolean   loggable;
+  private       boolean   logged;
 
-  public DoosRuntimeException() {
-    super();
-  }
-
-  /**
-   * @param error     Type of error
-   * @param layer     Layer where the error was thrown
-   * @param loggable  Exption loggable or not?
-   * @param message   Explanation of the runtimeException
-   * @param cause     Cause of the runtimeException
-   */
-  public DoosRuntimeException(DoosError error, DoosLayer layer,
-                              boolean loggable, String message,
-                              Throwable cause) {
+  protected DoosRuntimeException(DoosError error, DoosLayer layer,
+                                 boolean loggable, String message,
+                                 Throwable cause) {
     super(message, cause);
     this.error    = error;
     this.layer    = layer;
@@ -50,35 +39,19 @@ public abstract class DoosRuntimeException extends RuntimeException
     this.logged   = false;
   }
 
-  /**
-   * @param error   Type of error
-   * @param layer   Layer where the error was thrown
-   * @param message Explanation of the runtimeException
-   * @param cause   Cause of the runtimeException
-   */
-  public DoosRuntimeException(DoosError error, DoosLayer layer, String message,
-                              Throwable cause) {
+  protected DoosRuntimeException(DoosError error, DoosLayer layer,
+                                 String message,
+                                 Throwable cause) {
     this(error, layer, true, message, cause);
   }
 
-  /**
-   * @param error     Type of error
-   * @param layer     Layer where the error was thrown
-   * @param loggable  Exption loggable or not?
-   * @param message   Explanation of the runtimeException
-   */
-  public DoosRuntimeException(DoosError error, DoosLayer layer,
-                              boolean loggable, String message) {
+  protected DoosRuntimeException(DoosError error, DoosLayer layer,
+                                 boolean loggable, String message) {
     this(error, layer, loggable, message, null);
   }
 
-  /**
-   * @param error   Type of error
-   * @param layer   Layer where the error was thrown
-   * @param message Explanation of the runtimeException
-   */
-  public DoosRuntimeException(DoosError error, DoosLayer layer,
-                              String message) {
+  protected DoosRuntimeException(DoosError error, DoosLayer layer,
+                                 String message) {
     this(error, layer, true, message, null);
   }
 
@@ -98,13 +71,13 @@ public abstract class DoosRuntimeException extends RuntimeException
   }
 
   @Override
-  public void setLoggedTrue() {
-    this.logged = true;
+  public boolean isLoggable() {
+    return this.loggable;
   }
 
   @Override
-  public boolean isLoggable() {
-    return this.loggable;
+  public String getStackTraceAsString() {
+    return DoosExceptionHelper.getStackTrace(this);
   }
 
   @Override
@@ -113,8 +86,8 @@ public abstract class DoosRuntimeException extends RuntimeException
   }
 
   @Override
-  public String getStackTraceAsString() {
-    return DoosExceptionHelper.getStackTrace(this);
+  public void setLoggedTrue() {
+    logged  = true;
   }
 
   @Override

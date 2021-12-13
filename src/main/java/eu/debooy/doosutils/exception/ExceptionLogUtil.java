@@ -42,7 +42,7 @@ public final class ExceptionLogUtil {
   }
 
   private static Throwable getRootCause(Throwable cause, int level) {
-    if (level < (MAX_DEPTH - 1) 
+    if (level < (MAX_DEPTH - 1)
         && null != cause) {
       if (null != cause.getCause()) {
         getRootCause(cause, (level + 1));
@@ -66,10 +66,10 @@ public final class ExceptionLogUtil {
   }
 
   public static String getStackTrace(Throwable cause) {
-    StringWriter  sw      = new StringWriter();
+    var     sw      = new StringWriter();
     cause.printStackTrace(new PrintWriter(sw));
-    StringBuffer  sb      = sw.getBuffer();
-    String        result  = null;
+    var     sb      = sw.getBuffer();
+    String  result;
     if (sb.length() > 4000) {
       result  = sb.substring(0, 3999);
     } else {

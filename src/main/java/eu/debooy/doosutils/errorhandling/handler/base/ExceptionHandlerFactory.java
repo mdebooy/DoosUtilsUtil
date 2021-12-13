@@ -27,16 +27,16 @@ import eu.debooy.doosutils.errorhandling.handler.PersistenceEJBExceptionHandler;
 public final class ExceptionHandlerFactory {
   private ExceptionHandlerFactory() {}
 
-  private static  IExceptionHandler businessHandler     =
+  private static final  IExceptionHandler businessHandler     =
       new DefaultEJBExceptionHandler("Business EJB Exception Handler",
                                      DoosLayer.BUSINESS, true);
-  private static  IExceptionHandler defaultHandler      =
+  private static        IExceptionHandler defaultHandler      =
       new DefaultEJBExceptionHandler("Default EJB Exception Handler",
                                      DoosLayer.UNDEFINED, true);
-  private static  IExceptionHandler persistenceHandler  =
+  private static final  IExceptionHandler persistenceHandler  =
       new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
                                          DoosLayer.PERSISTENCE, true);
-  private static  IExceptionHandler presentationHandler =
+  private static final  IExceptionHandler presentationHandler =
       new DefaultEJBExceptionHandler("Presentation Exception Handler",
                                      DoosLayer.PRESENTATION, true);
 
