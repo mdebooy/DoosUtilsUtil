@@ -17,7 +17,6 @@
 package eu.debooy.doosutils.exception;
 
 
-
 /**
  * @author Marco de Booij
  */
@@ -58,7 +57,9 @@ public class LoggableException extends Exception {
 
   /**
    * @param application the application to set
+   * @deprecated
    */
+  @Deprecated
   public void setApplication(String application) {
     this.application = application;
   }
@@ -72,7 +73,9 @@ public class LoggableException extends Exception {
 
   /**
    * @param errorMessage the errorMessage to set
+   * @deprecated
    */
+  @Deprecated
   public void setErrorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
   }

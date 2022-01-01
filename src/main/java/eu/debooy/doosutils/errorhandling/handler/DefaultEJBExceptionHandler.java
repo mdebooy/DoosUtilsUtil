@@ -62,9 +62,8 @@ public class DefaultEJBExceptionHandler extends ExceptionHandlerBase {
       log(de);
       throw de;
     } catch (Throwable e) {
-      TechnicalException  te  =
-          new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
-                                 e.getMessage(), e);
+      var te  = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
+                                       e.getMessage(), e);
       log(te);
       throw te;
     }

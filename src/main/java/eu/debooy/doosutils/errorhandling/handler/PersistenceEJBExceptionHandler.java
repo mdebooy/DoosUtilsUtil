@@ -46,10 +46,14 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
   public PersistenceEJBExceptionHandler(String name, DoosLayer layer,
                                         boolean objectNotFoundPattern) {
     super(name, layer, objectNotFoundPattern);
+  }
 
+  private static PersistenceEJBExceptionUtil getUtil() {
     if (null == util) {
-      util = new PersistenceEJBExceptionUtil();
+      util  = new PersistenceEJBExceptionUtil();
     }
+
+    return util;
   }
 
   @Override
@@ -123,15 +127,15 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
       log(ir);
       throw ir;
     } catch (Throwable th) {
-      TechnicalException te = new TechnicalException(
-          DoosError.RUNTIME_EXCEPTION, getLayer(), th.getMessage(), th);
+      var te = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
+                                      th.getMessage(), th);
       log(te);
       throw te;
     }
   }
 
   private boolean shouldBeSerialized(Throwable t) {
-    Package pack  = t.getClass().getPackage();
+    var pack  = t.getClass().getPackage();
     if (pack == null) {
       return false;
     }
@@ -156,14 +160,14 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
 
   public static Throwable findRootCause(Throwable t, int nbTimes) {
     Throwable targetException = t;
-    if (null != targetException) {
-      if ((null != targetException.getCause()) && (nbTimes != 0)) {
-        targetException = t.getCause();
-        if ((targetException instanceof SQLException)) {
-          return util.transform((SQLException) targetException);
-        }
-        targetException = findRootCause(targetException, nbTimes--);
+    if (null != targetException
+        && null != targetException.getCause()
+        && nbTimes != 0) {
+      targetException = t.getCause();
+      if ((targetException instanceof SQLException)) {
+        return getUtil().transform((SQLException) targetException);
       }
+      targetException = findRootCause(targetException, nbTimes-1);
     }
 
     return targetException;

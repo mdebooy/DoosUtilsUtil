@@ -79,11 +79,10 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
                                            Object object)
       throws ObjectNotFoundException {
     ObjectNotFoundException e = null;
-    if (!"void".equals(invocation.getMethod().getReturnType().getName())) {
-      if (null == object) {
-        e = buildObjectNotFoundException(invocation);
-      } else if (((object instanceof Collection))
-          && (((Collection<?>) object).isEmpty())) {
+    if (invocation.getMethod().getReturnType() != Void.TYPE) {
+      if (null == object
+          || (object instanceof Collection
+              && ((Collection<?>) object).isEmpty())) {
         e = buildObjectNotFoundException(invocation);
       }
     }
