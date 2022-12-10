@@ -16,7 +16,11 @@
  */
 package eu.debooy.doosutils.errorhandling.handler.base;
 
+import eu.debooy.doosutils.errorhandling.exception.SerializableException;
+import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
+import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
+import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.doosutils.errorhandling.exception.base.IDoosException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,13 +45,25 @@ public abstract class ExceptionHandlerBase implements IExceptionHandler {
     this.objectNotFoundPattern  = objectNotFoundPattern;
   }
 
-  @Override
-  public void log(IDoosException e) {
-    if (e.isLoggable()
-        && (!e.isLogged())) {
-      LOGGER.error("IDoosException logged by " + getName() + " handler",
-                   (Throwable) e);
+  protected DoosRuntimeException caughtRuntimeException(RuntimeException re) {
+    DoosRuntimeException dre;
+    if (shouldBeSerialized(re)) {
+      dre = new SerializableException(re);
+    } else {
+      dre = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
+                                   re.getMessage(), re);
     }
+    log(dre);
+
+    return dre;
+  }
+
+  protected TechnicalException caughtThrowable(Throwable th) {
+    var te = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
+                                    th.getMessage(), th);
+    log(te);
+
+    return te;
   }
 
   @Override
@@ -63,5 +79,29 @@ public abstract class ExceptionHandlerBase implements IExceptionHandler {
   @Override
   public boolean isObjectNotFoundPattern() {
     return objectNotFoundPattern;
+  }
+
+  @Override
+  public void log(IDoosException e) {
+    if (e.isLoggable()
+        && (!e.isLogged())) {
+      LOGGER.error("IDoosException logged by " + getName() + " handler",
+                   (Throwable) e);
+    }
+  }
+
+  private boolean shouldBeSerialized(Throwable t) {
+    var pack  = t.getClass().getPackage();
+    if (pack == null) {
+      return false;
+    }
+    if (pack.getName().startsWith("java.")) {
+      return false;
+    }
+    if (pack.getName().startsWith("javax.")) {
+      return false;
+    }
+
+    return !(t instanceof RuntimeException);
   }
 }

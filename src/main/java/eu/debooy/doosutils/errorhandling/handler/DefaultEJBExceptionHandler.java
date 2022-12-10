@@ -16,10 +16,7 @@
  */
 package eu.debooy.doosutils.errorhandling.handler;
 
-import eu.debooy.doosutils.errorhandling.exception.SerializableException;
-import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.WrappedException;
-import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
@@ -51,21 +48,10 @@ public class DefaultEJBExceptionHandler extends ExceptionHandlerBase {
       } else {
         throw e;
       }
-    } catch (RuntimeException e) {
-      DoosRuntimeException  de;
-      if (shouldBeSerialized(e)) {
-        de  = new SerializableException(e);
-      } else {
-        de  = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
-                                     e.getMessage(), e);
-      }
-      log(de);
-      throw de;
-    } catch (Throwable e) {
-      var te  = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
-                                       e.getMessage(), e);
-      log(te);
-      throw te;
+    } catch (RuntimeException re) {
+      throw caughtRuntimeException(re);
+    } catch (Throwable th) {
+      throw caughtThrowable(th);
     }
   }
 

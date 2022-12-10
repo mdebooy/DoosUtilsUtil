@@ -19,7 +19,6 @@ package eu.debooy.doosutils.errorhandling.handler;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
 import eu.debooy.doosutils.errorhandling.exception.MultipleObjectFoundException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
-import eu.debooy.doosutils.errorhandling.exception.SerializableException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.WrappedException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
@@ -56,6 +55,70 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
     return util;
   }
 
+  private DoosRuntimeException
+      caughtEntityExistsException(EntityExistsException eee) {
+    DoosRuntimeException  dre =
+        new DuplicateObjectException(DoosLayer.PERSISTENCE,
+                                     eee.getMessage(), eee);
+    log(dre);
+
+    return dre;
+  }
+
+  private DoosRuntimeException
+      caughtNonUniqueResultException(NonUniqueResultException nure) {
+    DoosRuntimeException  dre =
+        new MultipleObjectFoundException(DoosLayer.PERSISTENCE,
+                                         nure.getMessage(), nure);
+    log(dre);
+
+    return dre;
+  }
+
+  private DoosRuntimeException caughtNoResultException(NoResultException nre) {
+      DoosRuntimeException  dre =
+          new ObjectNotFoundException(DoosLayer.PERSISTENCE,
+                                      nre.getMessage(), nre);
+      log(dre);
+
+      return dre;
+  }
+
+  private DoosRuntimeException
+      caughtPersistenceException(PersistenceException pe) {
+    DoosRuntimeException  dre;
+    Throwable             t   = findRootCause(pe, 5);
+
+    dre = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
+                                 t.getMessage(), t);
+
+    log(dre);
+
+    return dre;
+  }
+
+  private DoosRuntimeException
+      caughtReportingSQLException(ReportingSQLException rse) {
+    log(new TechnicalException(DoosError.RUNTIME_EXCEPTION,
+                                     DoosLayer.PERSISTENCE,
+                                     rse.getMessage(), rse));
+    DoosRuntimeException  dre;
+    switch (rse.getSQLState()) {
+      case "23505":
+        dre =
+            new DuplicateObjectException(DoosLayer.PERSISTENCE,
+                                         rse.getMessage(), rse);
+        break;
+      default:
+        dre = new TechnicalException(DoosError.RUNTIME_EXCEPTION,
+                                     DoosLayer.PERSISTENCE,
+                                     rse.getMessage(), rse);
+    }
+    log(dre);
+
+    return dre;
+  }
+
   @Override
   public void handle(Throwable t) {
     try {
@@ -70,83 +133,21 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
       } else {
         throw ire;
       }
-    } catch (NoResultException e) {
-      DoosRuntimeException  de  =
-          new ObjectNotFoundException(DoosLayer.PERSISTENCE,
-                                      e.getMessage(), e);
-      log(de);
-      throw de;
-    } catch (NonUniqueResultException e) {
-      DoosRuntimeException  de  =
-          new MultipleObjectFoundException(DoosLayer.PERSISTENCE,
-                                           e.getMessage(), e);
-      log(de);
-      throw de;
+    } catch (NoResultException nre) {
+      throw caughtNoResultException(nre);
+    } catch (NonUniqueResultException nure) {
+      throw caughtNonUniqueResultException(nure);
     } catch (EntityExistsException eee){
-      DoosRuntimeException  de  =
-          new DuplicateObjectException(DoosLayer.PERSISTENCE,
-                                       eee.getMessage(), eee);
-      log(de);
-      throw de;
+      throw caughtEntityExistsException(eee);
     } catch (ReportingSQLException rse) {
-      log(new TechnicalException(DoosError.RUNTIME_EXCEPTION,
-                                       DoosLayer.PERSISTENCE,
-                                       rse.getMessage(), rse));
-      DoosRuntimeException  de;
-      switch (rse.getSQLState()) {
-        case "23505":
-          de  =
-              new DuplicateObjectException(DoosLayer.PERSISTENCE,
-                                           rse.getMessage(), rse);
-          break;
-        default:
-          de  = new TechnicalException(DoosError.RUNTIME_EXCEPTION,
-                                       DoosLayer.PERSISTENCE,
-                                       rse.getMessage(), rse);
-      }
-      log(de);
-      throw de;
+      throw caughtReportingSQLException(rse);
     } catch (PersistenceException pe) {
-      Throwable thr = findRootCause(pe, 5);
-
-      DoosRuntimeException ir;
-
-      ir = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
-          thr.getMessage(), thr);
-
-      log(ir);
-      throw ir;
-    } catch (RuntimeException rt) {
-      DoosRuntimeException ir;
-      if (shouldBeSerialized(rt)) {
-        ir = new SerializableException(rt);
-      } else {
-        ir = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
-            rt.getMessage(), rt);
-      }
-      log(ir);
-      throw ir;
+      throw caughtPersistenceException(pe);
+    } catch (RuntimeException re) {
+      throw caughtRuntimeException(re);
     } catch (Throwable th) {
-      var te = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
-                                      th.getMessage(), th);
-      log(te);
-      throw te;
+      throw caughtThrowable(th);
     }
-  }
-
-  private boolean shouldBeSerialized(Throwable t) {
-    var pack  = t.getClass().getPackage();
-    if (pack == null) {
-      return false;
-    }
-    if (pack.getName().startsWith("java.")) {
-      return false;
-    }
-    if (pack.getName().startsWith("javax.")) {
-      return false;
-    }
-
-    return !(t instanceof RuntimeException);
   }
 
   private Throwable unwrapException(WrappedException e) {

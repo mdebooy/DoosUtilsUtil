@@ -23,8 +23,8 @@ package eu.debooy.doosutils.exception;
 public class LoggableException extends Exception {
   private static final  long  serialVersionUID  = 1L;
 
-  private String  application;
-  private String  errorMessage;
+  private final String  application;
+  private final String  errorMessage;
 
   public LoggableException(LoggableException le) {
     super(le);
@@ -48,35 +48,11 @@ public class LoggableException extends Exception {
     this.errorMessage = message;
   }
 
-  /**
-   * @return the application
-   */
   public String getApplication() {
     return application;
   }
 
-  /**
-   * @param application the application to set
-   * @deprecated
-   */
-  @Deprecated
-  public void setApplication(String application) {
-    this.application = application;
-  }
-
-  /**
-   * @return the errorMessage
-   */
   public String getErrorMessage() {
     return errorMessage;
-  }
-
-  /**
-   * @param errorMessage the errorMessage to set
-   * @deprecated
-   */
-  @Deprecated
-  public void setErrorMessage(String errorMessage) {
-    this.errorMessage = errorMessage;
   }
 }
