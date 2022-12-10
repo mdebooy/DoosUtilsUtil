@@ -27,7 +27,7 @@ public abstract class DoosRuntimeException extends RuntimeException
   private final DoosError error;
   private final DoosLayer layer;
   private       boolean   loggable;
-  private       boolean   logged;
+  private       boolean   logged    = false;
 
   protected DoosRuntimeException(DoosError error, DoosLayer layer,
                                  boolean loggable, String message,
@@ -36,13 +36,12 @@ public abstract class DoosRuntimeException extends RuntimeException
     this.error    = error;
     this.layer    = layer;
     this.loggable = loggable;
-    this.logged   = false;
   }
 
   protected DoosRuntimeException(DoosError error, DoosLayer layer,
                                  String message,
                                  Throwable cause) {
-    this(error, layer, true, message, cause);
+    this(error, layer, false, message, cause);
   }
 
   protected DoosRuntimeException(DoosError error, DoosLayer layer,
@@ -52,27 +51,27 @@ public abstract class DoosRuntimeException extends RuntimeException
 
   protected DoosRuntimeException(DoosError error, DoosLayer layer,
                                  String message) {
-    this(error, layer, true, message, null);
+    this(error, layer, false, message, null);
   }
 
   @Override
   public DoosError getDoosError() {
-    return this.error;
+    return error;
   }
 
   @Override
   public DoosLayer getDoosLayer() {
-    return this.layer;
+    return layer;
   }
 
   @Override
   public boolean isLogged() {
-    return this.logged;
+    return logged;
   }
 
   @Override
   public boolean isLoggable() {
-    return this.loggable;
+    return loggable;
   }
 
   @Override
@@ -93,6 +92,6 @@ public abstract class DoosRuntimeException extends RuntimeException
   @Override
   public String toString() {
     return "DoosRuntimeException ( " + super.toString() + "    "  + "layer = "
-           + this.layer + "    " + "error = " + this.error + " )";
+           + layer + "    " + "error = " + error + " )";
   }
 }
