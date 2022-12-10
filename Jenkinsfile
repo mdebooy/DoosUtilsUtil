@@ -1,2 +1,2 @@
 @Library('dOOS-shared-library') _
-jenkinsVoorJava(project:'Natuur')
+jenkinsVoorJava(project:'dOOSUtils-util')
