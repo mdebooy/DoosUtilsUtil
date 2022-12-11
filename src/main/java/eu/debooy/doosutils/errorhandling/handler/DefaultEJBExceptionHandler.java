@@ -55,21 +55,6 @@ public class DefaultEJBExceptionHandler extends ExceptionHandlerBase {
     }
   }
 
-  private boolean shouldBeSerialized(Throwable t) {
-    var pack  = t.getClass().getPackage();
-    if (null == pack) {
-      return false;
-    }
-    if (pack.getName().startsWith("java.")) {
-      return false;
-    }
-    if (pack.getName().startsWith("javax.")) {
-      return false;
-    }
-
-    return !(t instanceof RuntimeException);
-  }
-
   private Throwable unwrapException(WrappedException e) {
     Throwable t = e;
     while ((t instanceof WrappedException)) {
