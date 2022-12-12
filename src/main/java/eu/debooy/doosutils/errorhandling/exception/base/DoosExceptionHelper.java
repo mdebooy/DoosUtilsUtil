@@ -16,6 +16,7 @@
  */
 package eu.debooy.doosutils.errorhandling.exception.base;
 
+import eu.debooy.doosutils.DoosConstants;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -36,20 +37,29 @@ public final class DoosExceptionHelper {
 
   public static String convertParameter(Object object) {
     if (null == object) {
-      return "<NULL>";
+      return DoosConstants.NULL;
+    }
+    if (object instanceof String) {
+      return ((String)object);
     }
     if (object instanceof Long) {
       return ((Long) object).toString();
     }
-    if (object instanceof String) {
-      return ((String)object);
+    if (object instanceof Double) {
+      return ((Double)object).toString();
+    }
+    if (object instanceof Boolean) {
+      return Boolean.toString((Boolean)object);
+    }
+    if (object instanceof Float) {
+      return ((Float)object).toString();
     }
     return "";
   }
 
   public static String convertParameters(Object[] objects) {
     if (null == objects) {
-      return "<NULL>";
+      return DoosConstants.NULL;
     }
 
     var params  = new StringBuilder();
