@@ -16,6 +16,8 @@
  */
 package eu.debooy.doosutils.errorhandling.exception.base;
 
+import eu.debooy.doosutils.DoosConstants;
+
 
 /**
  * @author Marco de Booij
@@ -23,10 +25,10 @@ package eu.debooy.doosutils.errorhandling.exception.base;
 public enum DoosLayer {
   PRESENTATION, BUSINESS, PERSISTENCE, SYSTEM, UNDEFINED;
 
-  private final String  value  = "N/A";
+  private final String  value  = DoosConstants.NA;
 
   public String getLayer() {
-    return this.value;
+    return value;
   }
 
   @Override
