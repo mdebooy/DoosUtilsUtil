@@ -41,7 +41,7 @@ public abstract class DoosRuntimeException extends RuntimeException
   protected DoosRuntimeException(DoosError error, DoosLayer layer,
                                  String message,
                                  Throwable cause) {
-    this(error, layer, false, message, cause);
+    this(error, layer, true, message, cause);
   }
 
   protected DoosRuntimeException(DoosError error, DoosLayer layer,
@@ -51,7 +51,7 @@ public abstract class DoosRuntimeException extends RuntimeException
 
   protected DoosRuntimeException(DoosError error, DoosLayer layer,
                                  String message) {
-    this(error, layer, false, message, null);
+    this(error, layer, true, message, null);
   }
 
   @Override

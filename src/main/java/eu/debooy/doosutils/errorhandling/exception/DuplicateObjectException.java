@@ -31,28 +31,28 @@ public class DuplicateObjectException extends DoosRuntimeException {
 
   private Object  failedObject;
 
-  public Object getFailedObject() {
-      return failedObject;
-  }
-
   public DuplicateObjectException(DoosLayer layer, String message) {
-    super(DoosError.DUPLICATE_OBJECT, layer, message);
+    super(DoosError.DUPLICATE_OBJECT, layer, false, message);
   }
 
   public DuplicateObjectException(DoosLayer layer, String message,
                                       Throwable cause) {
-    super(DoosError.DUPLICATE_OBJECT, layer, message, cause);
+    super(DoosError.DUPLICATE_OBJECT, layer, false, message, cause);
   }
 
   public DuplicateObjectException(DoosLayer doosLayer, Object failedObject,
                                   String message) {
-    super(DoosError.DUPLICATE_OBJECT, doosLayer, message);
+    super(DoosError.DUPLICATE_OBJECT, doosLayer, false, message);
     this.failedObject = failedObject;
   }
 
   public DuplicateObjectException(DoosLayer doosLayer, Object failedObject,
                                   String message, Throwable cause) {
-    super(DoosError.DUPLICATE_OBJECT, doosLayer, message, cause);
+    super(DoosError.DUPLICATE_OBJECT, doosLayer, false, message, cause);
     this.failedObject = failedObject;
+  }
+
+  public Object getFailedObject() {
+      return failedObject;
   }
 }

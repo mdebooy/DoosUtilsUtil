@@ -19,7 +19,6 @@ package eu.debooy.doosutils.errorhandling.exception;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
-
 import javax.ejb.ApplicationException;
 
 
@@ -31,11 +30,11 @@ public class MultipleObjectFoundException extends DoosRuntimeException {
   private static final long serialVersionUID = 1L;
 
   public MultipleObjectFoundException(DoosLayer layer, String message) {
-    super(DoosError.MULTIPLE_OBJECT_FOUND, layer, message);
+    super(DoosError.MULTIPLE_OBJECT_FOUND, layer, false, message);
   }
 
   public MultipleObjectFoundException(DoosLayer layer, String message,
                                       Throwable cause) {
-    super(DoosError.MULTIPLE_OBJECT_FOUND, layer, message, cause);
+    super(DoosError.MULTIPLE_OBJECT_FOUND, layer, false, message, cause);
   }
 }
