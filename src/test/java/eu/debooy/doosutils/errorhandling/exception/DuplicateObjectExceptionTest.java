@@ -34,6 +34,17 @@ public class DuplicateObjectExceptionTest {
   private static final Throwable  t             = new Throwable();
 
   @Test
+  public void testGetStackTraceAsString() {
+    var doe       = new DuplicateObjectException(DoosLayer.PERSISTENCE,
+                                                 "GetStackTrace exception");
+    var regel     = doe.getStackTraceAsString().split(System.lineSeparator());
+    var toString  = doe.toString();
+
+    assertEquals(toString, regel[0]);
+    assertTrue(regel[1].contains(getClass().getName()));
+  }
+
+  @Test
   public void testInit1() {
     var doe = new DuplicateObjectException(DoosLayer.PERSISTENCE,
                                            "Init1 exception");

@@ -29,16 +29,15 @@ public class LoggableException extends Exception {
   public LoggableException(LoggableException le) {
     super(le);
 
-    this.application  = le.getApplication();
-    this.errorMessage = le.getErrorMessage();
+    application   = le.getApplication();
+    errorMessage  = le.getErrorMessage();
   }
 
   public LoggableException(Exception e, String application) {
     super(e);
 
-    this.application = application;
-    Throwable cause = ExceptionLogUtil.getMainException(e);
-    this.errorMessage = cause.getMessage();
+    this.application  = application;
+    errorMessage      = ExceptionLogUtil.getMainException(e).getMessage();
   }
 
   public LoggableException(String message, String application) {

@@ -29,31 +29,6 @@ public final class ExceptionLogUtil {
 
   private ExceptionLogUtil() {}
 
-  public static Throwable getRootCause(Throwable cause) {
-    if (cause != null) {
-      if (cause.getCause() != null) {
-        getRootCause(cause, 0);
-      } else {
-        return cause;
-      }
-    }
-
-    return null;
-  }
-
-  private static Throwable getRootCause(Throwable cause, int level) {
-    if (level < (MAX_DEPTH - 1)
-        && null != cause) {
-      if (null != cause.getCause()) {
-        getRootCause(cause, (level + 1));
-      } else {
-        return cause;
-      }
-    }
-
-    return cause;
-  }
-
   public static Throwable getMainException(Exception e) {
     if (e instanceof RemoteException) {
       RemoteException re    = (RemoteException) e;
@@ -62,7 +37,32 @@ public final class ExceptionLogUtil {
         return cause;
       }
     }
+
     return e;
+  }
+
+  public static Throwable getRootCause(Throwable cause) {
+    if (null == cause) {
+      return null;
+    }
+
+    if (null != cause.getCause()) {
+      return getRootCause(cause, 1);
+    }
+
+    return cause;
+  }
+
+  private static Throwable getRootCause(Throwable cause, int level) {
+    if (level >= MAX_DEPTH) {
+      return cause;
+    }
+
+    if (null != cause.getCause()) {
+      return getRootCause(cause.getCause(), (level + 1));
+    }
+
+    return cause;
   }
 
   public static String getStackTrace(Throwable cause) {

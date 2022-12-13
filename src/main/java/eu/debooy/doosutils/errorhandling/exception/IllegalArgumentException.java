@@ -19,7 +19,6 @@ package eu.debooy.doosutils.errorhandling.exception;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
-
 import javax.ejb.ApplicationException;
 
 

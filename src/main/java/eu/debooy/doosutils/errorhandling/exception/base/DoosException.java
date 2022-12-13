@@ -27,7 +27,7 @@ public class DoosException extends Exception
   private final DoosError error;
   private final DoosLayer layer;
   private       boolean   loggable;
-  private       boolean   logged;
+  private       boolean   logged    = false;
 
   public DoosException(DoosError error, DoosLayer layer, boolean loggable,
                        String message, Throwable cause) {
@@ -35,7 +35,6 @@ public class DoosException extends Exception
     this.error    = error;
     this.layer    = layer;
     this.loggable = loggable;
-    this.logged   = false;
   }
 
   public DoosException(DoosError error, DoosLayer layer, String message,

@@ -33,16 +33,6 @@ public class DoosExceptionHelperTest {
                                    "Persistence exception");
 
   @Test
-  public void testGetStackTrace() {
-    var regel     = DoosExceptionHelper.getStackTrace(doe)
-                                       .split(System.lineSeparator());
-    var toString  = doe.toString();
-
-    assertEquals(toString, regel[0]);
-    assertTrue(regel[1].contains(getClass().getName()));
-  }
-
-  @Test
   public void testConvertParameter1() {
     String  param = null;
 
@@ -94,11 +84,32 @@ public class DoosExceptionHelperTest {
   }
 
   @Test
-  public void testConvertParameters() {
+  public void testConvertParameters1() {
     var       param   = DoosConstants.NULL + ", parameter, 0, ";
-//    Object[]  params  = new Object[]
 
     assertEquals(param,
                  DoosExceptionHelper.convertParameters(new Object[] {null, "parameter", 0L, doe}));
+  }
+
+  @Test
+  public void testConvertParameters2() {
+    assertEquals("",
+                 DoosExceptionHelper.convertParameters(new Object[] {}));
+  }
+
+  @Test
+  public void testConvertParameters3() {
+    assertEquals(DoosConstants.NULL,
+                 DoosExceptionHelper.convertParameters(null));
+  }
+
+  @Test
+  public void testGetStackTrace() {
+    var regel     = DoosExceptionHelper.getStackTrace(doe)
+                                       .split(System.lineSeparator());
+    var toString  = doe.toString();
+
+    assertEquals(toString, regel[0]);
+    assertTrue(regel[1].contains(getClass().getName()));
   }
 }

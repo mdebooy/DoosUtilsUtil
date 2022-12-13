@@ -31,12 +31,11 @@ public class DoosExceptionTest {
   private static final Throwable  t = new Throwable();
 
   @Test
-  public void testGetStackTrace() {
+  public void testGetStackTraceAsString() {
     var de        = new DoosException(DoosError.DUPLICATE_OBJECT,
                                       DoosLayer.BUSINESS,
                                       "GetStackTrace exception");
-    var regel     = DoosExceptionHelper.getStackTrace(de)
-                                       .split(System.lineSeparator());
+    var regel     = de.getStackTraceAsString().split(System.lineSeparator());
     var toString  = de.toString();
 
     assertEquals(toString, regel[0]);

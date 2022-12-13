@@ -17,7 +17,6 @@
 package eu.debooy.doosutils.exception;
 
 
-
 /**
  * @author Marco de Booij
  */
