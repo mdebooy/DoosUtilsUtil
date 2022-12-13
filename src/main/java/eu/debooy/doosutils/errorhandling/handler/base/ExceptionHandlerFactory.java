@@ -30,7 +30,7 @@ public final class ExceptionHandlerFactory {
   private static final  IExceptionHandler businessHandler     =
       new DefaultEJBExceptionHandler("Business EJB Exception Handler",
                                      DoosLayer.BUSINESS, true);
-  private static        IExceptionHandler defaultHandler      =
+  private static final  IExceptionHandler defaultHandler      =
       new DefaultEJBExceptionHandler("Default EJB Exception Handler",
                                      DoosLayer.UNDEFINED, true);
   private static final  IExceptionHandler persistenceHandler  =
@@ -54,9 +54,5 @@ public final class ExceptionHandlerFactory {
 
   public static IExceptionHandler getPresentationHandler() {
     return presentationHandler;
-  }
-
-  public static void setDefaultHandler(IExceptionHandler exceptionHandler) {
-    defaultHandler  = exceptionHandler;
   }
 }
