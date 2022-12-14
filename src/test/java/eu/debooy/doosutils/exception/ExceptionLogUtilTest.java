@@ -25,7 +25,9 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
+import java.rmi.AccessException;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -65,6 +67,29 @@ public class ExceptionLogUtilTest {
     var me  = ExceptionLogUtil.getMainException(fnfe);
 
     assertTrue(me instanceof FileNotFoundException);
+  }
+
+  @Test
+  public void testGetMainException3() {
+    var re  = new AccessException("Access Exception");
+    var me  = ExceptionLogUtil.getMainException(re);
+
+    assertTrue(me instanceof AccessException);
+  }
+
+  @Test
+  public void testGetMainException4() {
+    var re  = new AccessException("Access Exception", doe);
+    var me  = ExceptionLogUtil.getMainException(re);
+
+    assertTrue(me instanceof DuplicateObjectException);
+  }
+
+  @Test
+  public void testGetRootCause0() {
+    var rc  = ExceptionLogUtil.getRootCause(null);
+
+    assertNull(rc);
   }
 
   @Test
@@ -124,6 +149,16 @@ public class ExceptionLogUtilTest {
     var regel     = ExceptionLogUtil.getStackTrace(fnfe)
                                     .split(System.lineSeparator());
     var toString  = fnfe.toString();
+
+    assertEquals(toString, regel[0]);
+    assertTrue(regel[1].contains(getClass().getName()));
+  }
+
+  @Test
+  public void testGetStackTrace3() {
+    var regel     = ExceptionLogUtil.getStackTrace(te)
+                                    .split(System.lineSeparator());
+    var toString  = te.toString();
 
     assertEquals(toString, regel[0]);
     assertTrue(regel[1].contains(getClass().getName()));
