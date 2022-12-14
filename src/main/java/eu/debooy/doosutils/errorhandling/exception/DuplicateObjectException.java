@@ -29,15 +29,17 @@ import javax.ejb.ApplicationException;
 public class DuplicateObjectException extends DoosRuntimeException {
   private static final long serialVersionUID = 1L;
 
-  private Object  failedObject;
+  private transient final Object  failedObject;
 
   public DuplicateObjectException(DoosLayer layer, String message) {
     super(DoosError.DUPLICATE_OBJECT, layer, false, message);
+    failedObject  = null;
   }
 
   public DuplicateObjectException(DoosLayer layer, String message,
                                       Throwable cause) {
     super(DoosError.DUPLICATE_OBJECT, layer, false, message, cause);
+    failedObject  = null;
   }
 
   public DuplicateObjectException(DoosLayer doosLayer, Object failedObject,

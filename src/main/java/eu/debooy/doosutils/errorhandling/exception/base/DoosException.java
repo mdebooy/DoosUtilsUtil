@@ -26,7 +26,9 @@ public class DoosException extends Exception
 
   private final DoosError error;
   private final DoosLayer layer;
+  @SuppressWarnings("java:S1165")
   private       boolean   loggable;
+  @SuppressWarnings("java:S1165")
   private       boolean   logged    = false;
 
   public DoosException(DoosError error, DoosLayer layer, boolean loggable,

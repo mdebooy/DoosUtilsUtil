@@ -30,21 +30,21 @@ import javax.ejb.ApplicationException;
 public class SerializableException extends DoosRuntimeException {
   private static final  long  serialVersionUID  = 1L;
 
-  private String string;
+  private final String string;
 
   public SerializableException(IDoosException source) {
     super(source.getDoosError(), source.getDoosLayer(),
           ((Throwable) source).getMessage(), (Throwable) source);
-    init((Throwable) source);
+
+    string  = (((Throwable) source).toString()
+                + " [Wrapped in SerializableException]");
+    setStackTrace(((Throwable) source).getStackTrace());
   }
 
   public SerializableException(Throwable source) {
-    super(DoosError.SERIALIZED_EXCEPTION, DoosLayer.UNDEFINED, source
-        .getMessage(), wrap(source.getCause()));
-    init(source);
-  }
+    super(DoosError.SERIALIZED_EXCEPTION, DoosLayer.UNDEFINED,
+          source.getMessage(), wrap(source.getCause()));
 
-  private void init(Throwable source) {
     string = (source.toString() + " [Wrapped in SerializableException]");
     setStackTrace(source.getStackTrace());
   }

@@ -34,6 +34,7 @@ public class DefaultEJBExceptionHandler extends ExceptionHandlerBase {
     super(name, layer, objectNotFoundPattern);
   }
 
+  @SuppressWarnings("java:S1181")
   @Override
   public void handle(Throwable t) {
     try {

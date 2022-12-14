@@ -50,6 +50,7 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
    * @return object
    * @throws java.lang.Exception
    */
+  @SuppressWarnings("java:S1181")
   @AroundInvoke
   public Object handleException(InvocationContext invocation)
       throws Exception {
@@ -75,6 +76,7 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
    * @param invocation De InvocationContext
    * @param object Het object dat niet gevonden werd.
    */
+  @SuppressWarnings("java:S1066")
   private void handleObjectNotFoundPattern(InvocationContext invocation,
                                            Object object)
       throws ObjectNotFoundException {
