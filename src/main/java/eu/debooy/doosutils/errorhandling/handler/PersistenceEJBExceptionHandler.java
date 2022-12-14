@@ -90,7 +90,7 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
     Throwable             t   = findRootCause(pe, 5);
 
     dre = new TechnicalException(DoosError.RUNTIME_EXCEPTION, getLayer(),
-                                 t.getMessage(), t);
+                                 (null == t) ? "" : t.getMessage(), t);
 
     log(dre);
 

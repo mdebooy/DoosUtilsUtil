@@ -18,7 +18,6 @@ package eu.debooy.doosutils.errorhandling.handler.base;
 
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.IDoosException;
-
 import java.io.Serializable;
 
 
