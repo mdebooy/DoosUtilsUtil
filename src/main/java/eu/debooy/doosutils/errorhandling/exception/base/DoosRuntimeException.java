@@ -20,13 +20,16 @@ package eu.debooy.doosutils.errorhandling.exception.base;
 /**
  * @author Marco de Booij
  */
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public abstract class DoosRuntimeException extends RuntimeException
     implements IDoosException {
   private static final long serialVersionUID = 1L;
 
   private final DoosError error;
   private final DoosLayer layer;
+  @SuppressWarnings("java:S1165")
   private       boolean   loggable;
+  @SuppressWarnings("java:S1165")
   private       boolean   logged    = false;
 
   protected DoosRuntimeException(DoosError error, DoosLayer layer,

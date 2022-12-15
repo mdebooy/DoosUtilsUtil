@@ -97,6 +97,7 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
     return dre;
   }
 
+  @SuppressWarnings("java:S1301")
   private DoosRuntimeException
       caughtReportingSQLException(ReportingSQLException rse) {
     log(new TechnicalException(DoosError.RUNTIME_EXCEPTION,
@@ -119,6 +120,7 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
     return dre;
   }
 
+  @SuppressWarnings("java:S1181")
   @Override
   public void handle(Throwable t) {
     try {

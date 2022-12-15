@@ -125,20 +125,7 @@ public class PersistenceEJBExceptionHandlerTest {
       pee.handle(onfe);
       fail("ObjectNotFoundException not thrown");
     } catch (ObjectNotFoundException e) {
-      // OK
-    }
-  }
-
-  @Test
-  public void testHandle6() {
-    var pee =
-        new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
-                                           DoosLayer.PERSISTENCE, true);
-
-    try {
-      pee.handle(t);
-      fail("Throwable not thrown");
-    } catch (Throwable e) {
+      System.out.println(e.getMessage());
       // OK
     }
   }
@@ -158,7 +145,7 @@ public class PersistenceEJBExceptionHandlerTest {
   }
 
   @Test
-  public void testInit6() {
+  public void testInit1() {
     var pee =
         new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
                                            DoosLayer.PERSISTENCE, true);

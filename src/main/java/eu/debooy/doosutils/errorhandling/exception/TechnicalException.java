@@ -29,6 +29,7 @@ import javax.ejb.ApplicationException;
 public class TechnicalException extends DoosRuntimeException {
   private static final  long  serialVersionUID  = 1L;
 
+  @SuppressWarnings("java:S1165")
   private boolean recoverableInTime = false;
 
   public TechnicalException(DoosError error, DoosLayer layer,
