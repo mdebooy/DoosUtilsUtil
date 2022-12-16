@@ -20,14 +20,13 @@ import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
-
 import java.sql.SQLException;
 
 
 /**
  * @author Marco de Booij
  */
-public class PersistenceEJBExceptionUtil {
+public final class PersistenceEJBExceptionUtil {
   public DoosRuntimeException transform(SQLException th) {
     return new TechnicalException(DoosError.RUNTIME_EXCEPTION,
         DoosLayer.PERSISTENCE, th.getMessage(), th);
