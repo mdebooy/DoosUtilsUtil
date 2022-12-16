@@ -20,7 +20,6 @@ package eu.debooy.doosutils.errorhandling.exception.base;
 /**
  * @author Marco de Booij
  */
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class DoosException extends Exception
     implements IDoosException {
   private static final long serialVersionUID = 1L;
@@ -74,6 +73,7 @@ public class DoosException extends Exception
     return this.loggable;
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   @Override
   public String getStackTraceAsString() {
     return DoosExceptionHelper.getStackTrace(this);
