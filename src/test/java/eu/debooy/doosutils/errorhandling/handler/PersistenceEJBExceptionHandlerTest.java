@@ -25,6 +25,11 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
+import java.sql.SQLException;
+import javax.persistence.EntityExistsException;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.PersistenceException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -39,34 +44,91 @@ public class PersistenceEJBExceptionHandlerTest {
   private static final  String  PERSISTENCEHANDLER  =
       "Persistence EJB Exception Handler";
 
-  private static final  DuplicateObjectException      doe   =
+  private static final  DuplicateObjectException        doe   =
       new DuplicateObjectException(DoosLayer.PERSISTENCE,
                                    "Persistence exception");
-  private static final  FileNotFoundException         fnfe  =
+  private static final  FileNotFoundException           fnfe  =
       new FileNotFoundException(DoosLayer.BUSINESS,
                                 "File exception", doe);
-  private static final  IllegalArgumentException      iae =
+  private static final  IllegalArgumentException        iae   =
       new IllegalArgumentException(DoosLayer.BUSINESS,
                                    "Illegal Argument exception", fnfe);
-  private static final  MultipleObjectFoundException  mofe  =
+  private static final  MultipleObjectFoundException    mofe  =
       new MultipleObjectFoundException(DoosLayer.PERSISTENCE,
                                        "Multiple Object Found exception", iae);
-  private static final  ObjectNotFoundException       onfe  =
+  private static final  ObjectNotFoundException         onfe  =
       new ObjectNotFoundException(DoosLayer.PERSISTENCE,
                                   "Object Not Found exception", mofe);
-  private static final  Throwable                     t   = new Throwable();
-  private static final  TechnicalException            te  =
+  private static final  SQLException                    se    =
+      new SQLException("SQLException exception");
+  private static final  PersistenceEJBExceptionHandler  spee  =
+      new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
+                                         DoosLayer.PERSISTENCE, true);
+//  private static final  Throwable                       t     = new Throwable();
+  private static final  TechnicalException              te    =
       new TechnicalException(DoosError.RUNTIME_EXCEPTION, DoosLayer.PERSISTENCE,
                              "Technical exception", onfe);
 
   @Test
-  public void testHandle1() {
-    var pee =
-        new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
-                                           DoosLayer.PERSISTENCE, true);
+  public void testFindRootCause0() {
+    var t = PersistenceEJBExceptionHandler.findRootCause(te, 0);
 
+    assertEquals("Technical exception", t.getMessage());
+  }
+
+  @Test
+  public void testFindRootCause1() {
+    var t = PersistenceEJBExceptionHandler.findRootCause(te, 1);
+
+    assertEquals("Object Not Found exception", t.getMessage());
+  }
+
+  @Test
+  public void testFindRootCause2() {
+    var t = PersistenceEJBExceptionHandler.findRootCause(te, 2);
+
+    assertEquals("Multiple Object Found exception", t.getMessage());
+  }
+
+  @Test
+  public void testFindRootCause3() {
+    var t = PersistenceEJBExceptionHandler.findRootCause(te, 3);
+
+    assertEquals("Illegal Argument exception", t.getMessage());
+  }
+
+  @Test
+  public void testFindRootCause4() {
+    var t = PersistenceEJBExceptionHandler.findRootCause(te, 4);
+
+    assertEquals("File exception", t.getMessage());
+  }
+
+  @Test
+  public void testFindRootCause5() {
+    var t = PersistenceEJBExceptionHandler.findRootCause(te, 5);
+
+    assertEquals("Persistence exception", t.getMessage());
+  }
+
+  @Test
+  public void testFindRootCause8() {
+    var t = PersistenceEJBExceptionHandler.findRootCause(se, 0);
+
+    assertEquals("SQLException exception", t.getMessage());
+  }
+
+  @Test
+  public void testFindRootCause9() {
+    var t = PersistenceEJBExceptionHandler.findRootCause(te, 9);
+
+    assertEquals("Persistence exception", t.getMessage());
+  }
+
+  @Test
+  public void testHandle1() {
     try {
-      pee.handle(doe);
+      spee.handle(doe);
       fail("DuplicateObjectException not thrown");
     } catch (DuplicateObjectException e) {
       // OK
@@ -75,12 +137,8 @@ public class PersistenceEJBExceptionHandlerTest {
 
   @Test
   public void testHandle2() {
-    var pee =
-        new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
-                                           DoosLayer.PERSISTENCE, true);
-
     try {
-      pee.handle(fnfe);
+      spee.handle(fnfe);
       fail("FileNotFoundException not thrown");
     } catch (FileNotFoundException e) {
       // OK
@@ -89,12 +147,8 @@ public class PersistenceEJBExceptionHandlerTest {
 
   @Test
   public void testHandle3() {
-    var pee =
-        new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
-                                           DoosLayer.PERSISTENCE, true);
-
     try {
-      pee.handle(iae);
+      spee.handle(iae);
       fail("IllegalArgumentException not thrown");
     } catch (IllegalArgumentException e) {
       // OK
@@ -103,12 +157,8 @@ public class PersistenceEJBExceptionHandlerTest {
 
   @Test
   public void testHandle4() {
-    var pee =
-        new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
-                                           DoosLayer.PERSISTENCE, true);
-
     try {
-      pee.handle(mofe);
+      spee.handle(mofe);
       fail("MultipleObjectFoundException not thrown");
     } catch (MultipleObjectFoundException e) {
       // OK
@@ -117,12 +167,8 @@ public class PersistenceEJBExceptionHandlerTest {
 
   @Test
   public void testHandle5() {
-    var pee =
-        new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
-                                           DoosLayer.PERSISTENCE, true);
-
     try {
-      pee.handle(onfe);
+      spee.handle(onfe);
       fail("ObjectNotFoundException not thrown");
     } catch (ObjectNotFoundException e) {
       System.out.println(e.getMessage());
@@ -132,14 +178,82 @@ public class PersistenceEJBExceptionHandlerTest {
 
   @Test
   public void testHandle7() {
-    var pee =
-        new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
-                                           DoosLayer.PERSISTENCE, true);
-
     try {
-      pee.handle(te);
+      spee.handle(te);
       fail("TechnicalException not thrown");
     } catch (TechnicalException e) {
+      // OK
+    }
+  }
+
+  @Test
+  public void testHandle11() {
+    var he  = new NoResultException("No Result exception");
+
+    try {
+      spee.handle(he);
+      fail("ObjectNotFoundException not thrown");
+    } catch (ObjectNotFoundException e) {
+      // OK
+    }
+  }
+
+  @Test
+  public void testHandle12() {
+    var he  = new NonUniqueResultException("Non Unique Result exception");
+
+    try {
+      spee.handle(he);
+      fail("MultipleObjectFoundException not thrown");
+    } catch (MultipleObjectFoundException e) {
+      // OK
+    }
+  }
+
+  @Test
+  public void testHandle13() {
+    var he  = new EntityExistsException("Entity Exists exception");
+
+    try {
+      spee.handle(he);
+      fail("DuplicateObjectException not thrown");
+    } catch (DuplicateObjectException e) {
+      // OK
+    }
+  }
+
+  @Test
+  public void testHandle15() {
+    var he  = new PersistenceException("Persistence exception");
+
+    try {
+      spee.handle(he);
+      fail("TechnicalException not thrown");
+    } catch (TechnicalException e) {
+      // OK
+    }
+  }
+
+  @Test
+  public void testHandle16() {
+    var he  = new RuntimeException("Runtime exception");
+
+    try {
+      spee.handle(he);
+      fail("TechnicalException not thrown");
+    } catch (TechnicalException e) {
+      // OK
+    }
+  }
+
+  @Test
+  public void testHandle17() {
+    var he  = new Throwable("Throwable");
+
+    try {
+      spee.handle(he);
+      fail("Throwable not thrown");
+    } catch (Throwable e) {
       // OK
     }
   }

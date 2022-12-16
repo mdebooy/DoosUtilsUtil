@@ -17,10 +17,12 @@
 
 package eu.debooy.doosutils.errorhandling.handler;
 
+import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 
 
@@ -30,6 +32,34 @@ import org.junit.Test;
 public class DefaultEJBExceptionHandlerTest {
   private static final  String  BUSINESSHANDLER =
       "Business EJB Exception Handler";
+
+  private static final  DefaultEJBExceptionHandler  sdee  =
+      new DefaultEJBExceptionHandler("Default EJB Exception Handler",
+                                     DoosLayer.PERSISTENCE, true);
+
+  @Test
+  public void testHandle16() {
+    var he  = new RuntimeException("Runtime exception");
+
+    try {
+      sdee.handle(he);
+      fail("TechnicalException not thrown");
+    } catch (TechnicalException e) {
+      // OK
+    }
+  }
+
+  @Test
+  public void testHandle17() {
+    var he  = new Throwable("Throwable");
+
+    try {
+      sdee.handle(he);
+      fail("Throwable not thrown");
+    } catch (Throwable e) {
+      // OK
+    }
+  }
 
   @Test
   public void testInit1() {
