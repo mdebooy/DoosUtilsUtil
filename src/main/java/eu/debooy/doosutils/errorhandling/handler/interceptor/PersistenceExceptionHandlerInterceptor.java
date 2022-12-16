@@ -35,7 +35,7 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
   private final IExceptionHandler handler;
 
   public PersistenceExceptionHandlerInterceptor() {
-    this.handler  = ExceptionHandlerFactory.getPersistenceHandler();
+    handler  = ExceptionHandlerFactory.getPersistenceHandler();
   }
 
   public PersistenceExceptionHandlerInterceptor(IExceptionHandler handler) {

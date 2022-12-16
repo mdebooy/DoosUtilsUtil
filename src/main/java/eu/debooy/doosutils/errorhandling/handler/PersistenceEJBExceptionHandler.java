@@ -125,15 +125,15 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
   public void handle(Throwable t) {
     try {
       throw t;
-    } catch (DoosException ie) {
-      log(ie);
-      throw new WrappedException(getLayer(), ie);
-    } catch (DoosRuntimeException ire) {
-      log(ire);
-      if ((ire instanceof WrappedException)) {
-        handle(unwrapException((WrappedException) ire));
+    } catch (DoosException de) {
+      log(de);
+      throw new WrappedException(getLayer(), de);
+    } catch (DoosRuntimeException dre) {
+      log(dre);
+      if ((dre instanceof WrappedException)) {
+        handle(unwrapException((WrappedException) dre));
       } else {
-        throw ire;
+        throw dre;
       }
     } catch (NoResultException nre) {
       throw caughtNoResultException(nre);
