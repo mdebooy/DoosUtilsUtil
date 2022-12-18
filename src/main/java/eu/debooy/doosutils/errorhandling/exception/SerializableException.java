@@ -17,9 +17,9 @@
 package eu.debooy.doosutils.errorhandling.exception;
 
 import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
+import eu.debooy.doosutils.errorhandling.exception.base.DoosException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
-import eu.debooy.doosutils.errorhandling.exception.base.IDoosException;
 import javax.ejb.ApplicationException;
 
 
@@ -30,22 +30,31 @@ import javax.ejb.ApplicationException;
 public class SerializableException extends DoosRuntimeException {
   private static final  long  serialVersionUID  = 1L;
 
-  private final String string;
+  private String  string;
 
-  public SerializableException(IDoosException source) {
+  public SerializableException(DoosException source) {
     super(source.getDoosError(), source.getDoosLayer(),
-          ((Throwable) source).getMessage(), (Throwable) source);
+          source.getMessage(), source);
 
-    string  = (((Throwable) source).toString()
-                + " [Wrapped in SerializableException]");
-    setStackTrace(((Throwable) source).getStackTrace());
+    setString(source);
+  }
+
+  public SerializableException(DoosRuntimeException source) {
+    super(source.getDoosError(), source.getDoosLayer(),
+          source.getMessage(), source);
+
+    setString(source);
   }
 
   public SerializableException(Throwable source) {
     super(DoosError.SERIALIZED_EXCEPTION, DoosLayer.UNDEFINED,
           source.getMessage(), wrap(source.getCause()));
 
-    string = (source.toString() + " [Wrapped in SerializableException]");
+    setString(source);
+  }
+
+  private void setString(Throwable source) {
+    string = source.toString() + " [Wrapped in SerializableException]";
     setStackTrace(source.getStackTrace());
   }
 
@@ -58,6 +67,7 @@ public class SerializableException extends DoosRuntimeException {
     if (null != t) {
       return new SerializableException(t);
     }
+
     return null;
   }
 }
