@@ -162,6 +162,10 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
   }
 
   public static Throwable findRootCause(Throwable t, int nbTimes) {
+    if (null == t) {
+      return null;
+    }
+
     Throwable targetException = t;
     if (null != targetException
         && null != targetException.getCause()
