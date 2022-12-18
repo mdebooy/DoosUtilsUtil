@@ -18,6 +18,9 @@
 package eu.debooy.doosutils.errorhandling.handler;
 
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
+import eu.debooy.doosutils.errorhandling.exception.WrappedException;
+import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
+import eu.debooy.doosutils.errorhandling.exception.base.DoosException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -55,8 +58,35 @@ public class DefaultEJBExceptionHandlerTest {
 
     try {
       sdee.handle(he);
-      fail("Throwable not thrown");
     } catch (Throwable e) {
+      return;
+    }
+
+    fail("Throwable not thrown");
+  }
+
+  @Test
+  public void testHandle18() {
+    var de  = new DoosException(DoosError.DUPLICATE_OBJECT, DoosLayer.BUSINESS,
+                                "dOOS exception");
+
+    try {
+      sdee.handle(de);
+      fail("WrappedException not thrown");
+    } catch (WrappedException e) {
+      // OK
+    }
+  }
+
+  @Test
+  public void testHandle19() {
+    var t   = new Throwable();
+    var we  = new WrappedException(DoosLayer.SYSTEM, t);
+
+    try {
+      sdee.handle(we);
+      fail("TechnicalException not thrown");
+    } catch (TechnicalException e) {
       // OK
     }
   }

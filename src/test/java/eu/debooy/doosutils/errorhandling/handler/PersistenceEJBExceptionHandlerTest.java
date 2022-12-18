@@ -32,6 +32,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import org.junit.Test;
@@ -126,6 +127,11 @@ public class PersistenceEJBExceptionHandlerTest {
   }
 
   @Test
+  public void testFindRootCause10() {
+    assertNull(PersistenceEJBExceptionHandler.findRootCause(null, 0));
+  }
+
+  @Test
   public void testHandle1() {
     try {
       spee.handle(doe);
@@ -171,7 +177,6 @@ public class PersistenceEJBExceptionHandlerTest {
       spee.handle(onfe);
       fail("ObjectNotFoundException not thrown");
     } catch (ObjectNotFoundException e) {
-      System.out.println(e.getMessage());
       // OK
     }
   }
@@ -252,8 +257,21 @@ public class PersistenceEJBExceptionHandlerTest {
 
     try {
       spee.handle(he);
-      fail("Throwable not thrown");
     } catch (Throwable e) {
+      return;
+    }
+
+    fail("Throwable not thrown");
+  }
+
+  @Test
+  public void testHandle21() {
+    var se    = new SQLException("SQL exception");
+
+    try {
+      spee.handle(se);
+      fail("TechnicalException not thrown");
+    } catch (TechnicalException e) {
       // OK
     }
   }
