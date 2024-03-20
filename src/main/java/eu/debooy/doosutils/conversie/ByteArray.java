@@ -26,12 +26,21 @@ import java.io.ObjectOutputStream;
 /**
  * @deprecated Vervangen door SerializationUtils ((de)serialization)
  *              van org.apache.commons.lang3
- * 
+ *
  * @author Marco de Booij
  */
+@Deprecated(since = "2.1.3", forRemoval = true)
 public final class ByteArray {
   private ByteArray() {}
 
+  /**
+   * @deprecated
+   *
+   * @param byteArray
+   * @return
+   * @throws IOException
+   * @deprecated
+   */
   @Deprecated(since = "2.1.3", forRemoval = true)
   public static Object byteArrayToObject(byte[] byteArray) throws IOException {
     var               bais    = new ByteArrayInputStream(byteArray);

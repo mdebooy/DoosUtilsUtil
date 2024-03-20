@@ -167,8 +167,7 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
     }
 
     Throwable targetException = t;
-    if (null != targetException
-        && null != targetException.getCause()
+    if (null != targetException.getCause()
         && nbTimes != 0) {
       targetException = t.getCause();
       if ((targetException instanceof SQLException)) {
