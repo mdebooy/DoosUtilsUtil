@@ -30,11 +30,11 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class SerializableExceptionTest {
-    private static final  DoosException sde =
-        new DoosException(DoosError.DUPLICATE_OBJECT, DoosLayer.BUSINESS,
-                          "DoosException exception");
+  private static final  DoosException sde =
+      new DoosException(DoosError.DUPLICATE_OBJECT, DoosLayer.BUSINESS,
+                        "DoosException exception");
 
-    @Test
+  @Test
   public void testInit1() {
     var de  = new DoosException(DoosError.DUPLICATE_OBJECT,
                                       DoosLayer.PERSISTENCE,
@@ -50,7 +50,7 @@ public class SerializableExceptionTest {
     assertFalse(se.isLogged());
   }
 
-    @Test
+  @Test
   public void testInit2() {
     var se  = new SerializableException(sde);
 

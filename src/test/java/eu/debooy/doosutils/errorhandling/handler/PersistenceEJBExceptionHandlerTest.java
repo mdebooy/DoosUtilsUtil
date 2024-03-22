@@ -65,7 +65,6 @@ public class PersistenceEJBExceptionHandlerTest {
   private static final  PersistenceEJBExceptionHandler  spee  =
       new PersistenceEJBExceptionHandler("Persistence EJB Exception Handler",
                                          DoosLayer.PERSISTENCE, true);
-//  private static final  Throwable                       t     = new Throwable();
   private static final  TechnicalException              te    =
       new TechnicalException(DoosError.RUNTIME_EXCEPTION, DoosLayer.PERSISTENCE,
                              "Technical exception", onfe);
@@ -121,13 +120,20 @@ public class PersistenceEJBExceptionHandlerTest {
 
   @Test
   public void testFindRootCause9() {
+    var t = PersistenceEJBExceptionHandler.findRootCause(se, 9);
+
+    assertEquals("SQLException exception", t.getMessage());
+  }
+
+  @Test
+  public void testFindRootCause10() {
     var t = PersistenceEJBExceptionHandler.findRootCause(te, 9);
 
     assertEquals("Persistence exception", t.getMessage());
   }
 
   @Test
-  public void testFindRootCause10() {
+  public void testFindRootCause11() {
     assertNull(PersistenceEJBExceptionHandler.findRootCause(null, 0));
   }
 
@@ -266,10 +272,10 @@ public class PersistenceEJBExceptionHandlerTest {
 
   @Test
   public void testHandle21() {
-    var se    = new SQLException("SQL exception");
+    var se1   = new SQLException("SQL exception");
 
     try {
-      spee.handle(se);
+      spee.handle(se1);
       fail("TechnicalException not thrown");
     } catch (TechnicalException e) {
       // OK
