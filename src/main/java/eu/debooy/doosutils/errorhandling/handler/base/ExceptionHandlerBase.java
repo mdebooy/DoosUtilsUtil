@@ -101,6 +101,9 @@ public abstract class ExceptionHandlerBase implements IExceptionHandler {
     if (pack.getName().startsWith("javax.")) {
       return false;
     }
+    if (pack.getName().startsWith("jakarta.")) {
+      return false;
+    }
 
     return !(t instanceof RuntimeException);
   }

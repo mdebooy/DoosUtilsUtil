@@ -20,7 +20,7 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
-import javax.ejb.ApplicationException;
+import jakarta.ejb.ApplicationException;
 
 
 /**

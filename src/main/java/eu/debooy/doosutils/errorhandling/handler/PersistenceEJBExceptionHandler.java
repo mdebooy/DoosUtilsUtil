@@ -26,11 +26,11 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.doosutils.errorhandling.handler.base.ExceptionHandlerBase;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
+import jakarta.persistence.PersistenceException;
 import java.sql.SQLException;
-import javax.persistence.EntityExistsException;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.PersistenceException;
 import org.apache.openjpa.lib.jdbc.ReportingSQLException;
 
 

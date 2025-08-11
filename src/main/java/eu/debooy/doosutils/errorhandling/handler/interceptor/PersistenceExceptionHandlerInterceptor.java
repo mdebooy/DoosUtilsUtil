@@ -20,10 +20,10 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosExceptionHelper;
 import eu.debooy.doosutils.errorhandling.handler.base.ExceptionHandlerFactory;
 import eu.debooy.doosutils.errorhandling.handler.base.IExceptionHandler;
+import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.InvocationContext;
 import java.io.Serializable;
 import java.util.Collection;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.InvocationContext;
 
 
 /**
